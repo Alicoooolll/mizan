@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="oled">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mizan — Daily Command, Prayer &amp; Habit Sanctuary</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ==========================================================================
+       4 HIGH-CONTRAST THEMES WITH CRISP DASHBOARD DIFFERENTIATION
+       ========================================================================== */
+    :root,
+    [data-theme="oled"] {
+      --bg-canvas: #05070C;
+      --bg-panel: #101624;
+      --bg-card: #182135;
+      --bg-card-hover: #1E2942;
+      --bg-input: #0B101B;
+      --border-panel: #2E3E5C;
+      --border-card: #273552;
+      --text-primary: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --text-muted: #7E92B2;
+      --shadow-panel: 0 14px 34px -8px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.04);
+      --hatched-bg: repeating-linear-gradient(
+        -45deg,
+        rgba(30, 41, 66, 0.35),
+        rgba(30, 41, 66, 0.35) 6px,
+        rgba(15, 22, 36, 0.35) 6px,
+        rgba(15, 22, 36, 0.35) 12px
+      );
+    }
+
+    [data-theme="warm-night"] {
+      --bg-canvas: #0E0B08;
+      --bg-panel: #1B1510;
+      --bg-card: #261E17;
+      --bg-card-hover: #31261D;
+      --bg-input: #120E0A;
+      --border-panel: #4A3828;
+      --border-card: #3B2D20;
+      --text-primary: #FEF3C7;
+      --text-secondary: #E7D5B8;
+      --text-muted: #A68E6E;
+      --shadow-panel: 0 14px 34px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(245, 158, 11, 0.07);
+      --hatched-bg: repeating-linear-gradient(
+        -45deg,
+        rgba(58, 43, 30, 0.35),
+        rgba(58, 43, 30, 0.35) 6px,
+        rgba(27, 21, 16, 0.35) 6px,
+        rgba(27, 21, 16, 0.35) 12px
+      );
+    }
+
+    [data-theme="obsidian"] {
+      --bg-canvas: #0B0F19;
+      --bg-panel: #131B2E;
+      --bg-card: #1C263D;
+      --bg-card-hover: #23304C;
+      --bg-input: #0E1422;
+      --border-panel: #2C3A57;
+      --border-card: #24314A;
+      --text-primary: #F1F5F9;
+      --text-secondary: #CBD5E1;
+      --text-muted: #64748B;
+      --shadow-panel: 0 10px 28px -6px rgba(0, 0, 0, 0.6);
+      --hatched-bg: repeating-linear-gradient(
+        -45deg,
+        rgba(35, 48, 76, 0.35),
+        rgba(35, 48, 76, 0.35) 6px,
+        rgba(19, 27, 46, 0.35) 6px,
+        rgba(19, 27, 46, 0.35) 12px
+      );
+    }
+
+    [data-theme="daylight"] {
+      --bg-canvas: #E2E8F0;
+      --bg-panel: #FFFFFF;
+      --bg-card: #F8FAFC;
+      --bg-card-hover: #F1F5F9;
+      --bg-input: #F1F5F9;
+      --border-panel: #CBD5E1;
+      --border-card: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --shadow-panel: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
+      --hatched-bg: repeating-linear-gradient(
+        -45deg,
+        rgba(203, 213, 225, 0.45),
+        rgba(203, 213, 225, 0.45) 6px,
+        rgba(241, 245, 249, 0.45) 6px,
+        rgba(241, 245, 249, 0.45) 12px
+      );
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* High-contrast structural classes */
+    .theme-panel {
+      background-color: var(--bg-panel);
+      border: 1.5px solid var(--border-panel);
+      box-shadow: var(--shadow-panel);
+    }
+
+    .theme-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-card);
+      transition: all 0.18s ease;
+    }
+
+    .theme-card:hover {
+      background-color: var(--bg-card-hover);
+    }
+
+    .theme-input {
+      background-color: var(--bg-input);
+      border: 1.5px solid var(--border-card);
+      color: var(--text-primary);
+    }
+
+    .theme-input:focus {
+      outline: none;
+      border-color: #F59E0B;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    }
+
+    .text-theme-primary { color: var(--text-primary); }
+    .text-theme-secondary { color: var(--text-secondary); }
+    .text-theme-muted { color: var(--text-muted); }
+    .border-theme { border-color: var(--border-card); }
+    .hatched-cell { background-image: var(--hatched-bg); }
+
+    /* Distinct Top Accent Bars for the 4 Dashboards */
+    .module-prayer { border-top: 4px solid #10B981 !important; }
+    .module-priority { border-top: 4px solid #F59E0B !important; }
+    .module-habits { border-top: 4px solid #06B6D4 !important; }
+    .module-horizon { border-top: 4px solid #8B5CF6 !important; }
+
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+
+    @keyframes checkPop {
+      0% { transform: scale(0.84); }
+      45% { transform: scale(1.14); }
+      100% { transform: scale(1); }
+    }
+    .animate-check-pop {
+      animation: checkPop 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+
+    .bar-segment {
+      transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 9999px; }
+  </style>
+</head>
+
+<body class="min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+  <!-- Main Container -->
+  <div class="max-w-[1440px] mx-auto px-3 sm:px-6 py-4 sm:py-6 space-y-6">
+
+    <!-- ================= TOP COMMAND HEADER ================= -->
+    <header class="theme-panel rounded-3xl p-4 sm:p-5">
+      <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+
+        <!-- Left: Brand Identity + Live Real Calendar Date & Clock -->
+        <div class="flex items-start sm:items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 via-amber-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 flex-shrink-0">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+              <path d="M16.5 4.5l.88 2.12 2.12.88-2.12.88-.88 2.12-.88-2.12-2.12-.88 2.12-.88.88-2.12z" />
+            </svg>
+          </div>
+
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="live-real-date-badge" class="text-[11px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                TODAY
+              </span>
+              <span id="live-clock-badge" class="text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 tabular-nums">
+                --:--:--
+              </span>
+              <span id="journey-start-badge" class="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-500/30">
+                Tracking Since: Today
+              </span>
+            </div>
+            <h1 class="font-display font-extrabold text-xl sm:text-2xl tracking-tight text-theme-primary mt-1">
+              Mizan — Sacred Rhythm, Priority &amp; Horizon Command
+            </h1>
+          </div>
+        </div>
+
+        <!-- Right: Active Day Banner + High-Contrast Theme Switcher + Fresh Start Controls -->
+        <div class="flex flex-wrap items-center justify-between xl:justify-end gap-2.5">
+
+          <!-- Currently Viewing Date Pill + Jump to Today -->
+          <div class="flex items-center gap-1.5 theme-card px-3 py-1.5 rounded-2xl">
+            <button onclick="shiftSelectedDate(-1)" title="Previous Day" class="p-1 rounded-lg hover:bg-amber-500/20 text-theme-secondary">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+              </svg>
+            </button>
+            <div class="text-center px-2">
+              <div class="text-[10px] font-mono uppercase tracking-wider text-theme-muted" id="viewing-date-Context">ACTIVE LOG DATE</div>
+              <div class="text-xs sm:text-sm font-display font-bold text-theme-primary tabular-nums" id="viewing-date-label">Today</div>
+            </div>
+            <button onclick="shiftSelectedDate(1)" title="Next Day" class="p-1 rounded-lg hover:bg-amber-500/20 text-theme-secondary">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </button>
+            <button id="jump-today-btn" onclick="jumpToToday()" class="ml-1 px-2.5 py-1 rounded-xl bg-amber-500 text-slate-950 font-mono font-bold text-[11px] hover:bg-amber-400 transition-all">
+              Today
+            </button>
+          </div>
+
+          <!-- 4 High-Contrast Theme Selector -->
+          <div class="flex items-center gap-1 theme-card p-1 rounded-2xl" role="group" aria-label="High Contrast Theme Selector">
+            <button onclick="setTheme('oled')" id="theme-btn-oled"
+              class="px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold transition-all">
+              🌑 OLED Night
+            </button>
+            <button onclick="setTheme('warm-night')" id="theme-btn-warm-night"
+              class="px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold transition-all">
+              🕯️ Warm Night
+            </button>
+            <button onclick="setTheme('obsidian')" id="theme-btn-obsidian"
+              class="px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold transition-all">
+              🌌 Studio
+            </button>
+            <button onclick="setTheme('daylight')" id="theme-btn-daylight"
+              class="px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold transition-all">
+              ☀️ Daylight
+            </button>
+          </div>
+
+          <!-- Sound & Settings / Start Fresh Buttons -->
+          <div class="flex items-center gap-2">
+            <button id="sound-toggle-btn" onclick="toggleSound()" title="Toggle Tactile Audio"
+              class="p-2.5 rounded-xl theme-card text-theme-secondary hover:border-amber-500/50">
+              <svg id="sound-on-icon" class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+              </svg>
+              <svg id="sound-off-icon" class="w-4 h-4 hidden text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531V19.94a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.506-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" />
+              </svg>
+            </button>
+
+            <button onclick="openWorkspaceModal()" title="Start Fresh From Today / Backup & Settings"
+              class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl theme-card text-xs font-mono font-semibold text-amber-400 hover:border-amber-500/50">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+              <span class="hidden sm:inline">Reset / Data</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 7-Day Real Calendar Strip (Inside Header for Instant Day Switching) -->
+      <div class="mt-4 pt-4 border-t border-theme flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono uppercase tracking-wider text-theme-muted font-semibold">Current Week Strip:</span>
+          <span id="week-range-label" class="text-xs font-mono font-bold text-amber-400"></span>
+        </div>
+
+        <div id="top-week-strip" class="grid grid-cols-7 gap-1.5 sm:gap-2 flex-1 max-w-3xl">
+          <!-- Populated dynamically with real dates -->
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= 4 COLOR-CODED KPI SUMMARY CARDS ================= -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4" aria-label="Key Performance Summary">
+      
+      <!-- KPI 1: Selected Day Alignment Score -->
+      <div class="theme-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-3 border-l-4 border-l-emerald-500">
+        <div>
+          <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400" id="kpi-day-title">TODAY'S ALIGNMENT</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="font-display font-extrabold text-3xl text-theme-primary tabular-nums" id="kpi-overall-pct">0%</span>
+            <span class="text-xs font-mono text-theme-muted" id="kpi-overall-items">0/0 logged</span>
+          </div>
+          <p class="text-[11px] text-theme-muted mt-1">Prayers + Priority Tasks + Habits</p>
+        </div>
+        <div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+          <svg class="w-16 h-16" viewBox="0 0 72 72">
+            <circle stroke="var(--border-card)" stroke-width="7" fill="transparent" r="28" cx="36" cy="36" />
+            <circle id="kpi-ring-circle" class="progress-ring-circle" stroke="#10B981"
+              stroke-width="7" stroke-dasharray="175.9" stroke-dashoffset="175.9" stroke-linecap="round"
+              fill="transparent" r="28" cx="36" cy="36" />
+          </svg>
+          <span id="kpi-ring-text" class="absolute font-mono font-bold text-xs text-theme-primary tabular-nums">0%</span>
+        </div>
+      </div>
+
+      <!-- KPI 2: Sacred Prayers Status -->
+      <div class="theme-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-3 border-l-4 border-l-amber-500">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">SACRED SALAH</span>
+            <span id="kpi-jamaah-pill" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">★ 0 Jama'ah</span>
+          </div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="font-display font-extrabold text-3xl text-theme-primary tabular-nums" id="kpi-prayer-fraction">0 / 5</span>
+            <span class="text-xs font-mono text-theme-muted">Fard</span>
+          </div>
+          <p class="text-[11px] text-emerald-400 font-mono mt-1" id="kpi-next-prayer-countdown">Next: --</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- KPI 3: Priority Command (P1 Must-Dos) -->
+      <div class="theme-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-3 border-l-4 border-l-cyan-400">
+        <div>
+          <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-cyan-400">P1 CRITICAL FOCUS</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="font-display font-extrabold text-3xl text-theme-primary tabular-nums" id="kpi-p1-fraction">0 / 0</span>
+            <span class="text-xs font-mono text-theme-muted">Must-Dos</span>
+          </div>
+          <p class="text-[11px] text-theme-muted mt-1" id="kpi-all-tasks-sub">0/0 total tasks done</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- KPI 4: Real Active Streak & Monthly Progress -->
+      <div class="theme-panel rounded-2xl p-4 sm:p-5 flex items-center justify-between gap-3 border-l-4 border-l-violet-500">
+        <div>
+          <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-violet-400">REAL STREAK (FROM START)</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="font-display font-extrabold text-3xl text-theme-primary tabular-nums" id="kpi-real-streak">0</span>
+            <span class="text-xs font-mono text-theme-muted">Active Days</span>
+          </div>
+          <p class="text-[11px] text-theme-muted mt-1" id="kpi-month-goals-sub">Monthly goals: 0/0</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 flex-shrink-0">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1.016a8.99 8.99 0 011.992-3.515 5.28 5.28 0 001.55 2.046 3.748 3.748 0 011.638 1.625z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= DASHBOARD MODULE 01: SACRED PRAYER SANCTUARY (EMERALD ACCENT) ================= -->
+    <section class="theme-panel module-prayer rounded-3xl p-5 sm:p-6" aria-label="Sacred Prayer Sanctuary">
+      
+      <!-- Module Header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-theme">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-[11px] font-bold">
+              DASHBOARD 01 · SACRED PRAYER SANCTUARY
+            </span>
+            <span id="prayer-section-date-pill" class="text-xs font-mono font-semibold text-amber-400"></span>
+          </div>
+          <p class="text-xs text-theme-secondary mt-1">
+            Click any prayer pillar to log <strong class="text-emerald-400">On Time</strong>, toggle <strong class="text-amber-400">★ Jama'ah</strong>, mark <strong class="text-orange-400">↺ Qaza</strong>, or click the <strong class="underline">time badge</strong> on any card to edit prayer times directly.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="markAllPrayersToday()"
+            class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-display font-bold text-xs transition-all shadow-sm">
+            ✓ Log All 5 On Time
+          </button>
+        </div>
+      </div>
+
+      <!-- Celestial Horizon Arc + 5 Editable Prayer Pillars -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-5 items-center">
+        
+        <!-- Left 8 Cols: Celestial Arc + 5 Prayer Cards -->
+        <div class="lg:col-span-8 space-y-4">
+          
+          <!-- Interactive SVG Celestial Horizon Arc -->
+          <div class="theme-card rounded-2xl p-3 relative overflow-hidden">
+            <div class="flex items-center justify-between text-[11px] font-mono text-theme-muted px-2 mb-1">
+              <span>🌅 Dawn Horizon (Fajr)</span>
+              <span id="arc-status-summary" class="text-emerald-400 font-bold">0/5 Completed</span>
+              <span>🌌 Night Sanctuary (Isha)</span>
+            </div>
+            <svg class="w-full h-20 overflow-visible" viewBox="0 0 700 86">
+              <defs>
+                <linearGradient id="mizanArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#38BDF8" />
+                  <stop offset="25%" stop-color="#FBBF24" />
+                  <stop offset="50%" stop-color="#F59E0B" />
+                  <stop offset="75%" stop-color="#FB7185" />
+                  <stop offset="100%" stop-color="#10B981" />
+                </linearGradient>
+              </defs>
+              <line x1="35" y1="70" x2="665" y2="70" stroke="var(--border-panel)" stroke-width="1.5" stroke-dasharray="5 5" />
+              <path d="M 65 70 Q 350 -18 635 70" fill="none" stroke="url(#mizanArcGrad)" stroke-width="3.5" stroke-linecap="round" />
+              <g id="celestial-arc-nodes"></g>
+            </svg>
+          </div>
+
+          <!-- 5 Daily Prayer Pillars (With Inline Time Editing) -->
+          <div id="five-prayers-grid" class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+            <!-- Fajr, Dhuhr, Asr, Maghrib, Isha populated by JS -->
+          </div>
+        </div>
+
+        <!-- Right 4 Cols: Editable Spiritual Deeds, Sunnah & Quran Tracker -->
+        <div class="lg:col-span-4 theme-card rounded-2xl p-4 sm:p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-theme pb-2.5">
+            <div>
+              <h3 class="font-display font-bold text-sm text-theme-primary">Sunnah, Adhkar &amp; Quran</h3>
+              <p class="text-[11px] text-theme-muted">Fully editable spiritual goals</p>
+            </div>
+            <button onclick="openAddSpiritualDeedModal()"
+              class="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-mono text-[11px] font-bold">
+              + Add Deed
+            </button>
+          </div>
+
+          <!-- Editable Spiritual Deeds Checklist -->
+          <div id="spiritual-deeds-list" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Quran Pages & Dhikr Counter -->
+          <div class="pt-3 border-t border-theme flex items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-semibold text-theme-primary block">📖 Daily Quran / Wird</span>
+              <span class="text-[11px] text-theme-muted font-mono">Log pages read on this date</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="adjustQuranPages(-1)" class="w-7 h-7 rounded-lg theme-panel font-mono text-sm font-bold hover:border-amber-400">−</button>
+              <span id="quran-pages-display" class="font-mono text-xs font-bold text-amber-400 min-w-[54px] text-center tabular-nums">0 pgs</span>
+              <button type="button" onclick="adjustQuranPages(1)" class="w-7 h-7 rounded-lg theme-panel font-mono text-sm font-bold hover:border-amber-400">+</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= MIDDLE 2-COLUMN WORKSPACE: MODULE 02 (PRIORITY) & MODULE 03 (HABITS) ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- DASHBOARD MODULE 02: PRIORITY COMMAND STACK (AMBER GOLD ACCENT) -->
+      <section class="lg:col-span-6 theme-panel module-priority rounded-3xl p-5 sm:p-6" aria-label="Priority Command Stack">
+        
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-theme">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-[11px] font-bold">
+              DASHBOARD 02 · PRIORITY COMMAND STACK (BY IMPORTANCE)
+            </span>
+            <h2 class="font-display font-bold text-lg text-theme-primary mt-1">
+              Tasks Arranged by Importance (P1 → P2 → P3)
+            </h2>
+          </div>
+          <span id="priority-date-indicator" class="text-xs font-mono text-amber-400 font-semibold"></span>
+        </div>
+
+        <!-- Quick Add Priority Task Form -->
+        <form onsubmit="handleAddPriorityTask(event)" class="mt-4 flex flex-col sm:flex-row gap-2">
+          <input type="text" id="new-task-title" required maxlength="100"
+            placeholder="Add task (e.g., Prepare algorithm project, Finish report)..."
+            class="theme-input flex-1 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm" />
+          <div class="flex items-center gap-2">
+            <select id="new-task-priority" class="theme-input px-3 py-2.5 rounded-xl text-xs font-mono font-bold text-amber-400">
+              <option value="P1">🔥 P1 Critical</option>
+              <option value="P2">⚡ P2 Important</option>
+              <option value="P3">📌 P3 Secondary</option>
+            </select>
+            <input type="text" id="new-task-est" maxlength="12" placeholder="45m" value="45m"
+              class="theme-input w-16 px-2.5 py-2.5 rounded-xl text-xs font-mono text-center" title="Estimated Duration" />
+            <button type="submit"
+              class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-bold text-xs flex-shrink-0">
+              + Add
+            </button>
+          </div>
+        </form>
+
+        <!-- Priority Tier Filter Pills -->
+        <div id="priority-filter-bar" class="flex flex-wrap items-center gap-1.5 my-3.5"></div>
+
+        <!-- Grouped P1, P2, P3 Tasks Container -->
+        <div id="priority-stack-list" class="space-y-4"></div>
+
+      </section>
+
+      <!-- DASHBOARD MODULE 03: DAILY HABITS & ROUTINE (CYAN SKY ACCENT) -->
+      <section class="lg:col-span-6 theme-panel module-habits rounded-3xl p-5 sm:p-6" aria-label="Daily Habits and 7-Day Matrix">
+        
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-theme">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-mono text-[11px] font-bold">
+              DASHBOARD 03 · DAILY HABITS &amp; 7-DAY CONSISTENCY
+            </span>
+            <h2 class="font-display font-bold text-lg text-theme-primary mt-1">
+              Editable Daily Rituals &amp; Week Grid
+            </h2>
+          </div>
+
+          <button onclick="openEditModal('habit-new')"
+            class="px-3 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-display font-bold text-xs">
+            + Custom Habit
+          </button>
+        </div>
+
+        <!-- Quick Inline Add Habit -->
+        <form onsubmit="handleQuickAddHabit(event)" class="mt-4 flex flex-col sm:flex-row gap-2">
+          <input type="text" id="new-habit-name" required maxlength="70"
+            placeholder="Add daily habit (e.g., Strength training, 3L Water)..."
+            class="theme-input flex-1 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm" />
+          <div class="flex items-center gap-2">
+            <select id="new-habit-category" class="theme-input px-3 py-2.5 rounded-xl text-xs font-mono">
+              <option value="fitness">💪 Fitness</option>
+              <option value="deepwork">🧠 Deep Work</option>
+              <option value="mindfulness">🌿 Mindfulness</option>
+              <option value="routine">🌙 Routine</option>
+            </select>
+            <button type="submit"
+              class="px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-display font-bold text-xs flex-shrink-0">
+              + Add
+            </button>
+          </div>
+        </form>
+
+        <!-- Habits Table + Current Week 7-Day Matrix -->
+        <div class="overflow-x-auto mt-4">
+          <div class="min-w-[480px]">
+            <div class="grid grid-cols-12 items-center pb-2 border-b border-theme text-[10px] font-mono font-bold text-theme-muted uppercase">
+              <div class="col-span-6">Habit (Click ✎ to Edit)</div>
+              <div class="col-span-5 grid grid-cols-7 text-center" id="habit-week-col-headers"></div>
+              <div class="col-span-1 text-right">Actions</div>
+            </div>
+            <div id="habit-rows-list" class="divide-y divide-slate-800/40 mt-1 space-y-1.5"></div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- ================= DASHBOARD MODULE 04: WEEKLY & MONTHLY HORIZON HUB (ROYAL VIOLET ACCENT) ================= -->
+    <section class="theme-panel module-horizon rounded-3xl p-5 sm:p-6" aria-label="Weekly and Monthly Horizon Tracker">
+      
+      <!-- Horizon Header & View Switcher -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-theme">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="px-2.5 py-0.5 rounded-md bg-violet-500/20 text-violet-300 border border-violet-500/40 font-mono text-[11px] font-bold">
+              DASHBOARD 04 · WEEKLY &amp; MONTHLY HORIZON HUB
+            </span>
+            <span class="text-xs font-mono text-theme-muted">
+              Real-Calendar Analytics, Monthly Grid &amp; Editable Milestones
+            </span>
+          </div>
+          <h2 class="font-display font-bold text-xl text-theme-primary mt-1">
+            Weekly Momentum &amp; Monthly Calendar Command
+          </h2>
+        </div>
+
+        <!-- Horizon View Mode Switcher: Split View / Weekly Focus / Monthly Focus -->
+        <div class="flex items-center gap-1.5 theme-card p-1.5 rounded-2xl self-start md:self-auto">
+          <button onclick="setHorizonTab('SPLIT')" id="horizon-tab-SPLIT"
+            class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all">
+            ⚡ Weekly + Monthly Split
+          </button>
+          <button onclick="setHorizonTab('WEEKLY')" id="horizon-tab-WEEKLY"
+            class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all">
+            📊 Weekly Hub
+          </button>
+          <button onclick="setHorizonTab('MONTHLY')" id="horizon-tab-MONTHLY"
+            class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all">
+            🗓️ Monthly Calendar
+          </button>
+        </div>
+      </div>
+
+      <!-- Horizon Content Grid -->
+      <div id="horizon-grid-wrapper" class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-5 items-start">
+
+        <!-- LEFT HALF (6 Cols): WEEKLY STREAK BAR CHART + EDITABLE WEEKLY GOALS -->
+        <div id="horizon-weekly-panel" class="lg:col-span-6 space-y-5">
+          
+          <!-- Weekly Streak & Completion Bar Chart Card -->
+          <div class="theme-card rounded-2xl p-4 sm:p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 class="font-display font-bold text-base text-theme-primary">Weekly Completion Chart</h3>
+                <p class="text-[11px] text-theme-muted">Click any bar to inspect or log that day</p>
+              </div>
+              <div id="weekly-chart-filter-tabs" class="flex items-center gap-1 bg-black/20 p-1 rounded-xl text-[10px] font-mono font-bold"></div>
+            </div>
+
+            <!-- 7-Bar Vertical Chart -->
+            <div id="weekly-bars-container" class="grid grid-cols-7 gap-2.5 h-44 items-end pt-6 px-1 border-b border-theme pb-2"></div>
+
+            <!-- Legend -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mt-3 text-[11px] font-mono text-theme-muted">
+              <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-emerald-500"></span>Prayers</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-amber-500"></span>Priority</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-xs bg-cyan-400"></span>Habits</span>
+              </div>
+              <span id="weekly-avg-badge" class="text-violet-300 font-bold">Active Avg: 0%</span>
+            </div>
+          </div>
+
+          <!-- Editable Weekly Objectives & Targets -->
+          <div class="theme-card rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="font-display font-bold text-base text-theme-primary">Weekly Sprint Goals</h3>
+                <p class="text-[11px] text-theme-muted">Key targets to accomplish this week</p>
+              </div>
+              <span id="weekly-goals-progress-pill" class="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-violet-500/20 text-violet-300 border border-violet-500/30">0/0</span>
+            </div>
+
+            <form onsubmit="handleAddWeeklyGoal(event)" class="flex gap-2 mb-3">
+              <input type="text" id="new-weekly-goal-input" required maxlength="85"
+                placeholder="Add a weekly goal (e.g., Complete 5 gym sessions, Finish chapter 4)..."
+                class="theme-input flex-1 px-3 py-2 rounded-xl text-xs" />
+              <button type="submit" class="px-3.5 py-2 rounded-xl bg-violet-500 hover:bg-violet-400 text-white font-display font-bold text-xs">
+                + Add
+              </button>
+            </form>
+
+            <div id="weekly-goals-list" class="space-y-2"></div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT HALF (6 Cols): REAL INTERACTIVE MONTHLY CALENDAR + MONTHLY MILESTONES -->
+        <div id="horizon-monthly-panel" class="lg:col-span-6 space-y-5">
+          
+          <!-- Real Monthly Calendar Grid Card -->
+          <div class="theme-card rounded-2xl p-4 sm:p-5">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 id="calendar-month-title" class="font-display font-extrabold text-base sm:text-lg text-theme-primary">
+                  October 2026
+                </h3>
+                <p class="text-[11px] text-theme-muted">
+                  Click any date cell to view/log • 5 dots = 5 Daily Prayers
+                </p>
+              </div>
+
+              <div class="flex items-center gap-1.5">
+                <button onclick="changeCalendarMonth(-1)" class="p-1.5 rounded-xl theme-panel hover:border-violet-400 text-theme-secondary" title="Previous Month">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+                <button onclick="jumpToToday()" class="px-2.5 py-1 rounded-xl theme-panel text-[11px] font-mono font-bold text-amber-400 hover:border-amber-400">
+                  Current Month
+                </button>
+                <button onclick="changeCalendarMonth(1)" class="p-1.5 rounded-xl theme-panel hover:border-violet-400 text-theme-secondary" title="Next Month">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Weekday Headers (Mon - Sun) -->
+            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] font-mono font-bold text-theme-muted uppercase mb-1.5">
+              <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+            </div>
+
+            <!-- Calendar Days Grid -->
+            <div id="monthly-calendar-grid" class="grid grid-cols-7 gap-1.5"></div>
+
+            <!-- Calendar Legend -->
+            <div class="mt-3 pt-2.5 border-t border-theme flex flex-wrap items-center justify-between gap-2 text-[10px] font-mono text-theme-muted">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>Prayer Logged
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-3 h-2 rounded-xs hatched-cell border border-slate-600 inline-block"></span>Before Journey Start
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-xs border-2 border-amber-400 inline-block"></span>Today
+              </span>
+            </div>
+          </div>
+
+          <!-- Editable Monthly Milestones & Big Goals -->
+          <div class="theme-card rounded-2xl p-4 sm:p-5">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="font-display font-bold text-base text-theme-primary">Monthly Milestones &amp; Targets</h3>
+                <p class="text-[11px] text-theme-muted">Drag progress slider or click ✎ to edit milestone</p>
+              </div>
+              <span id="monthly-goals-summary" class="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">0% Avg</span>
+            </div>
+
+            <form onsubmit="handleAddMonthlyGoal(event)" class="flex gap-2 mb-3">
+              <input type="text" id="new-monthly-goal-input" required maxlength="85"
+                placeholder="Add monthly milestone (e.g., Read 150 pages of Quran, Ship portfolio app)..."
+                class="theme-input flex-1 px-3 py-2 rounded-xl text-xs" />
+              <button type="submit" class="px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-display font-bold text-xs">
+                + Add
+              </button>
+            </form>
+
+            <div id="monthly-goals-list" class="space-y-2.5"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= UNIVERSAL EDIT MODAL (EDIT ANY TASK, HABIT, PRAYER, GOAL) ================= -->
+  <div id="universal-edit-modal" class="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="theme-panel rounded-3xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-theme pb-3">
+        <h3 id="edit-modal-heading" class="font-display font-bold text-lg text-theme-primary">Edit Item</h3>
+        <button onclick="closeEditModal()" class="p-1 rounded-lg text-theme-muted hover:text-theme-primary">✕</button>
+      </div>
+
+      <form onsubmit="saveUniversalEdit(event)" class="space-y-3.5">
+        <input type="hidden" id="edit-item-type" />
+        <input type="hidden" id="edit-item-id" />
+
+        <div>
+          <label id="edit-label-primary" class="block text-xs font-mono uppercase text-theme-muted mb-1">Title / Name *</label>
+          <input type="text" id="edit-input-primary" required maxlength="100" class="theme-input w-full px-3.5 py-2.5 rounded-xl text-sm" />
+        </div>
+
+        <div id="edit-secondary-wrap">
+          <label id="edit-label-secondary" class="block text-xs font-mono uppercase text-theme-muted mb-1">Target / Details / Time</label>
+          <input type="text" id="edit-input-secondary" maxlength="90" class="theme-input w-full px-3.5 py-2.5 rounded-xl text-sm" />
+        </div>
+
+        <div id="edit-select-wrap" class="hidden">
+          <label id="edit-label-select" class="block text-xs font-mono uppercase text-theme-muted mb-1">Category / Priority</label>
+          <select id="edit-input-select" class="theme-input w-full px-3.5 py-2.5 rounded-xl text-sm"></select>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-theme">
+          <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl text-xs font-mono text-theme-muted hover:bg-white/5">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-bold text-xs">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= WORKSPACE DATA & "START FRESH FROM TODAY" MODAL ================= -->
+  <div id="workspace-modal" class="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="theme-panel rounded-3xl max-w-md w-full p-6 space-y-4">
+      <div class="flex items-center justify-between border-b border-theme pb-3">
+        <h3 class="font-display font-bold text-lg text-theme-primary">Journey Start Date &amp; Data Controls</h3>
+        <button onclick="closeWorkspaceModal()" class="p-1 rounded-lg text-theme-muted hover:text-theme-primary">✕</button>
+      </div>
+
+      <p class="text-xs text-theme-secondary leading-relaxed">
+        Mizan only records what <strong>you actually complete</strong> from your Journey Start Date onward—no pre-filled fake past history.
+      </p>
+
+      <div class="theme-card p-3.5 rounded-2xl space-y-2">
+        <label class="block text-xs font-mono uppercase text-amber-400 font-bold">Your Journey Start Date</label>
+        <div class="flex items-center gap-2">
+          <input type="date" id="journey-start-date-input" class="theme-input flex-1 px-3 py-2 rounded-xl text-xs font-mono" />
+          <button onclick="updateJourneyStartDate()" class="px-3.5 py-2 rounded-xl bg-amber-500 text-slate-950 font-mono font-bold text-xs">
+            Update
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-2.5 pt-2">
+        <button onclick="startFreshFromToday()"
+          class="w-full py-2.5 px-4 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold">
+          ✨ Start Fresh From Today (Clear All Logs &amp; Begin Today at 0%)
+        </button>
+
+        <button onclick="copyBackupJson()"
+          class="w-full py-2.5 px-4 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-mono font-bold">
+          📋 Copy JSON Backup to Clipboard
+        </button>
+      </div>
+
+      <p id="workspace-modal-msg" class="text-center font-mono text-xs text-emerald-400 hidden"></p>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION JAVASCRIPT ================= -->
+  <script>
+    /**
+     * REAL CALENDAR UTILITIES (LOCAL YYYY-MM-DD)
+     */
+    const STORAGE_KEY = 'mizan_sanctuary_v3_clean';
+    const DAYS_SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const MONTHS_FULL = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    function toDateKey(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const d = String(dateObj.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function parseDateKey(dateKey) {
+      const [y, m, d] = dateKey.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function getRealTodayKey() {
+      return toDateKey(new Date());
+    }
+
+    // Returns Monday..Sunday Date objects for the week containing `dateKey`
+    function getWeekDatesFor(dateKey) {
+      const ref = parseDateKey(dateKey);
+      const jsDay = ref.getDay(); // 0=Sun .. 6=Sat
+      const diffToMonday = jsDay === 0 ? -6 : 1 - jsDay;
+      const monday = new Date(ref);
+      monday.setDate(ref.getDate() + diffToMonday);
+
+      return Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        return d;
+      });
+    }
+
+    /**
+     * DEFAULT CLEAN DATA (STARTS FROM TODAY — ZERO FAKE PAST LOGS)
+     */
+    function createCleanDefaultData() {
+      const todayKey = getRealTodayKey();
+      return {
+        journeyStartDate: todayKey,
+        prayersMeta: [
+          { id: 'fajr', name: 'Fajr', arabic: 'الفجر', time: '05:25', phase: 'Dawn', arcX: 90, arcY: 58 },
+          { id: 'dhuhr', name: 'Dhuhr', arabic: 'الظهر', time: '12:20', phase: 'Zenith', arcX: 220, arcY: 28 },
+          { id: 'asr', name: 'Asr', arabic: 'العصر', time: '15:40', phase: 'Afternoon', arcX: 350, arcY: 20 },
+          { id: 'maghrib', name: 'Maghrib', arabic: 'المغرب', time: '17:35', phase: 'Sunset', arcX: 480, arcY: 28 },
+          { id: 'isha', name: 'Isha', arabic: 'العشاء', time: '19:00', phase: 'Night', arcX: 610, arcY: 58 }
+        ],
+        spiritualDeedsMeta: [
+          { id: 'sd-1', name: 'Sunnah Rawatib (12 Rak’ahs)', target: '2 before Fajr, 4+2 Dhuhr, 2 Maghrib, 2 Isha' },
+          { id: 'sd-2', name: 'Morning & Evening Adhkar', target: 'Fortress of the Believerprotection & remembrance' },
+          { id: 'sd-3', name: 'Tahajjud / Witr Prayer', target: 'Last third of the night prayer' }
+        ],
+        tasks: [
+          { id: 't-1', title: 'Complete Deep Work / Core Algorithm & Coding Block', priority: 'P1', order: 1, estimate: '90m' },
+          { id: 't-2', title: 'Review University Lecture Notes & Key Assignments', priority: 'P1', order: 2, estimate: '60m' },
+          { id: 't-3', title: 'Build & Test Project Feature Module', priority: 'P2', order: 1, estimate: '45m' },
+          { id: 't-4', title: 'Solve 2 Data Structures / Logic Practice Problems', priority: 'P2', order: 2, estimate: '35m' },
+          { id: 't-5', title: 'Clear Desk & Plan Tomorrow’s Top 3 Priorities', priority: 'P3', order: 1, estimate: '15m' }
+        ],
+        habits: [
+          { id: 'h-1', name: 'Strength Training & Conditioning', target: '45m progressive overload + mobility', category: 'fitness' },
+          { id: 'h-2', name: 'Hydration (3L Water) & Creatine (5g)', target: 'Daily physical recovery & supplementation', category: 'fitness' },
+          { id: 'h-3', name: '2h Distraction-Free Deep Study', target: 'Phone away, full concentration block', category: 'deepwork' },
+          { id: 'h-4', name: 'Mindfulness / Tactical Chess Calculation', target: '15m focus sharpener', category: 'mindfulness' },
+          { id: 'h-5', name: 'Warm Night Screen & Sleep Before 23:30', target: 'Zero eye strain & full 8h recovery', category: 'routine' }
+        ],
+        weeklyGoals: [
+          { id: 'wg-1', title: 'Pray all 35 obligatory prayers on time this week', done: false },
+          { id: 'wg-2', title: 'Complete 4 full strength & conditioning workouts', done: false },
+          { id: 'wg-3', title: 'Finish all P1 Critical study & coding blocks', done: false }
+        ],
+        monthlyGoals: [
+          { id: 'mg-1', title: 'Complete 60+ pages of Quran reflection & study', progress: 0 },
+          { id: 'mg-2', title: 'Ship 2 complete software / AI portfolio projects', progress: 0 },
+          { id: 'mg-3', title: 'Maintain 85%+ daily habit & prayer consistency', progress: 0 }
+        ],
+        // dateLogs keyed by 'YYYY-MM-DD' — starts completely empty so zero fake past days exist!
+        dateLogs: {}
+      };
+    }
+
+    /**
+     * STATE MANAGEMENT
+     */
+    const initialToday = getRealTodayKey();
+    const initialDateObj = new Date();
+
+    let state = {
+      selectedDateKey: initialToday,
+      calendarYear: initialDateObj.getFullYear(),
+      calendarMonth: initialDateObj.getMonth(),
+      theme: 'oled',            // oled | warm-night | obsidian | daylight
+      soundEnabled: true,
+      priorityFilter: 'ALL',    // ALL | P1 | P2 | P3 | PENDING
+      weeklyChartMode: 'COMBINED', // COMBINED | PRAYERS | TASKS | HABITS
+      horizonTab: 'SPLIT',      // SPLIT | WEEKLY | MONTHLY
+      lastPopId: null,
+      data: createCleanDefaultData()
+    };
+
+    function getDayLog(dateKey) {
+      if (!state.data.dateLogs[dateKey]) {
+        state.data.dateLogs[dateKey] = {
+          prayers: {},
+          spiritualDeeds: {},
+          quranPages: 0,
+          tasksDone: {},
+          habitsDone: {}
+        };
+      }
+      return state.data.dateLogs[dateKey];
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          theme: state.theme,
+          soundEnabled: state.soundEnabled,
+          data: state.data
+        }));
+      } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed.data && parsed.data.prayersMeta) {
+            state.data = parsed.data;
+          }
+          if (parsed.theme) state.theme = parsed.theme;
+          if (typeof parsed.soundEnabled === 'boolean') state.soundEnabled = parsed.soundEnabled;
+        }
+      } catch (e) {
+        state.data = createCleanDefaultData();
+      }
+      const todayKey = getRealTodayKey();
+      state.selectedDateKey = todayKey;
+      const now = new Date();
+      state.calendarYear = now.getFullYear();
+      state.calendarMonth = now.getMonth();
+      applyTheme(state.theme);
+      applySoundIcons();
+    }
+
+    /**
+     * SOUND ENGINE (WEB AUDIO API)
+     */
+    let audioCtx = null;
+    function playSound(type) {
+      if (!state.soundEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+
+        if (type === 'check') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(380, now);
+          osc.frequency.exponentialRampToValueAtTime(760, now + 0.08);
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.095);
+        } else if (type === 'prayer') {
+          [440, 659.25].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.04);
+            gain.gain.setValueAtTime(0.09, now + i * 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.04);
+            osc.stop(now + 0.26);
+          });
+        } else if (type === 'uncheck') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.exponentialRampToValueAtTime(170, now + 0.07);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.085);
+        } else if (type === 'celebrate') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + i * 0.06);
+            gain.gain.setValueAtTime(0.11, now + i * 0.06);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.06 + 0.32);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + i * 0.06);
+            osc.stop(now + i * 0.06 + 0.34);
+          });
+        }
+      } catch (e) {}
+    }
+
+    function triggerConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#10B981', '#F59E0B', '#06B6D4', '#8B5CF6', '#F43F5E'];
+      const pieces = Array.from({ length: 60 }, () => ({
+        x: canvas.width * (0.25 + Math.random() * 0.5),
+        y: canvas.height * 0.3,
+        vx: (Math.random() - 0.5) * 11,
+        vy: -Math.random() * 10 - 4,
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1
+      }));
+      let f = 0;
+      function step() {
+        f++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let active = false;
+        pieces.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.35;
+          if (f > 40) p.alpha -= 0.025;
+          if (p.alpha > 0) {
+            active = true;
+            ctx.globalAlpha = Math.max(0, p.alpha);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(p.x, p.y, p.size, p.size * 0.65);
+          }
+        });
+        if (active && f < 110) requestAnimationFrame(step);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(step);
+    }
+
+    /**
+     * METRICS ENGINE FOR ANY DATE KEY ('YYYY-MM-DD')
+     */
+    function getMetricsForDate(dateKey) {
+      const log = state.data.dateLogs[dateKey];
+      let prayersDone = 0;
+      let jamaahCount = 0;
+
+      state.data.prayersMeta.forEach(p => {
+        const entry = log && log.prayers && log.prayers[p.id];
+        if (entry && (entry.status === 'ontime' || entry.status === 'qaza')) {
+          prayersDone++;
+          if (entry.jamaah) jamaahCount++;
+        }
+      });
+
+      const prayerPct = Math.round((prayersDone / 5) * 100);
+
+      const totalTasks = state.data.tasks.length;
+      const doneTasks = state.data.tasks.filter(t => log && log.tasksDone && log.tasksDone[t.id]).length;
+      const p1Tasks = state.data.tasks.filter(t => t.priority === 'P1');
+      const p1Done = p1Tasks.filter(t => log && log.tasksDone && log.tasksDone[t.id]).length;
+      const taskPct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+      const totalHabits = state.data.habits.length;
+      const doneHabits = state.data.habits.filter(h => log && log.habitsDone && log.habitsDone[h.id]).length;
+      const habitPct = totalHabits > 0 ? Math.round((doneHabits / totalHabits) * 100) : 0;
+
+      const totalItems = 5 + totalTasks + totalHabits;
+      const completedItems = prayersDone + doneTasks + doneHabits;
+      const overallPct = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+      const isBeforeStart = dateKey < state.data.journeyStartDate;
+
+      return {
+        prayersDone,
+        jamaahCount,
+        prayerPct,
+        totalTasks,
+        doneTasks,
+        p1Total: p1Tasks.length,
+        p1Done,
+        taskPct,
+        totalHabits,
+        doneHabits,
+        habitPct,
+        totalItems,
+        completedItems,
+        overallPct,
+        isBeforeStart
+      };
+    }
+
+    function calculateRealStreak() {
+      // Counts consecutive days from Today backwards (not going before journeyStartDate) where overallPct > 0
+      const todayKey = getRealTodayKey();
+      let streak = 0;
+      let cursor = parseDateKey(todayKey);
+
+      for (let i = 0; i < 365; i++) {
+        const k = toDateKey(cursor);
+        if (k < state.data.journeyStartDate) break;
+        const m = getMetricsForDate(k);
+        if (m.completedItems > 0) {
+          streak++;
+        } else if (k !== todayKey) {
+          break;
+        }
+        cursor.setDate(cursor.getDate() - 1);
+      }
+      return streak;
+    }
+
+    /**
+     * LIVE CLOCK & NEXT PRAYER COUNTDOWN
+     */
+    function updateLiveClock() {
+      const now = new Date();
+      const todayKey = toDateKey(now);
+
+      const dateStr = now.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      const dateBadge = document.getElementById('live-real-date-badge');
+      if (dateBadge) dateBadge.textContent = `📅 TODAY: ${dateStr.toUpperCase()}`;
+
+      const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
+      const clockBadge = document.getElementById('live-clock-badge');
+      if (clockBadge) clockBadge.textContent = `🕒 ${timeStr}`;
+
+      const startBadge = document.getElementById('journey-start-badge');
+      if (startBadge) {
+        startBadge.textContent = state.data.journeyStartDate === todayKey
+          ? '🚀 Started: Today (Day 1)'
+          : `🚀 Started: ${state.data.journeyStartDate}`;
+      }
+
+      // Calculate Next Prayer Countdown
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      let upcoming = null;
+      let diffMins = 0;
+
+      for (const p of state.data.prayersMeta) {
+        const [hh, mm] = p.time.split(':').map(Number);
+        const pMins = hh * 60 + mm;
+        if (pMins > nowMinutes) {
+          upcoming = p;
+          diffMins = pMins - nowMinutes;
+          break;
+        }
+      }
+      if (!upcoming && state.data.prayersMeta.length > 0) {
+        upcoming = state.data.prayersMeta[0];
+        const [hh, mm] = upcoming.time.split(':').map(Number);
+        diffMins = (24 * 60 - nowMinutes) + (hh * 60 + mm);
+      }
+
+      const countdownEl = document.getElementById('kpi-next-prayer-countdown');
+      if (countdownEl && upcoming) {
+        const hrs = Math.floor(diffMins / 60);
+        const mins = diffMins % 60;
+        countdownEl.textContent = `Next: ${upcoming.name} (${upcoming.time}) in ${hrs}h ${mins}m`;
+      }
+    }
+
+    /**
+     * THEME & SOUND CONTROLS
+     */
+    function setTheme(themeName) {
+      state.theme = themeName;
+      applyTheme(themeName);
+      saveState();
+    }
+
+    function applyTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+      ['oled', 'warm-night', 'obsidian', 'daylight'].forEach(t => {
+        const btn = document.getElementById(`theme-btn-${t}`);
+        if (!btn) return;
+        if (t === themeName) {
+          btn.className = 'px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-bold bg-amber-500 text-slate-950 shadow-xs transition-all';
+        } else {
+          btn.className = 'px-2.5 py-1.5 rounded-xl text-[11px] font-mono font-semibold text-theme-secondary hover:text-theme-primary transition-all';
+        }
+      });
+    }
+
+    function toggleSound() {
+      state.soundEnabled = !state.soundEnabled;
+      applySoundIcons();
+      if (state.soundEnabled) playSound('check');
+      saveState();
+    }
+
+    function applySoundIcons() {
+      document.getElementById('sound-on-icon').classList.toggle('hidden', !state.soundEnabled);
+      document.getElementById('sound-off-icon').classList.toggle('hidden', state.soundEnabled);
+    }
+
+    /**
+     * DATE NAVIGATION
+     */
+    function selectDateKey(dateKey) {
+      state.selectedDateKey = dateKey;
+      const d = parseDateKey(dateKey);
+      state.calendarYear = d.getFullYear();
+      state.calendarMonth = d.getMonth();
+      renderAll();
+    }
+
+    function shiftSelectedDate(deltaDays) {
+      const d = parseDateKey(state.selectedDateKey);
+      d.setDate(d.getDate() + deltaDays);
+      selectDateKey(toDateKey(d));
+    }
+
+    function jumpToToday() {
+      const todayKey = getRealTodayKey();
+      selectDateKey(todayKey);
+      playSound('check');
+    }
+
+    function changeCalendarMonth(delta) {
+      let m = state.calendarMonth + delta;
+      let y = state.calendarYear;
+      if (m < 0) { m = 11; y--; }
+      if (m > 11) { m = 0; y++; }
+      state.calendarMonth = m;
+      state.calendarYear = y;
+      renderMonthlyCalendar();
+    }
+
+    function setHorizonTab(tab) {
+      state.horizonTab = tab;
+      renderHorizonLayout();
+    }
+
+    /**
+     * PRAYER SANCTUARY INTERACTIONS
+     */
+    function togglePrayerCard(prayerId, dateKey = state.selectedDateKey) {
+      const log = getDayLog(dateKey);
+      const current = log.prayers[prayerId] || { status: 'unlogged', jamaah: false };
+
+      if (current.status === 'unlogged') {
+        current.status = 'ontime';
+        playSound('prayer');
+      } else {
+        current.status = 'unlogged';
+        current.jamaah = false;
+        playSound('uncheck');
+      }
+
+      log.prayers[prayerId] = current;
+      state.lastPopId = `prayer-${prayerId}-${dateKey}`;
+      saveState();
+      checkFullDayCelebration(dateKey);
+      renderAll();
+    }
+
+    function togglePrayerJamaah(event, prayerId) {
+      event.stopPropagation();
+      const log = getDayLog(state.selectedDateKey);
+      const current = log.prayers[prayerId] || { status: 'unlogged', jamaah: false };
+      current.jamaah = !current.jamaah;
+      if (current.jamaah && current.status === 'unlogged') {
+        current.status = 'ontime';
+      }
+      log.prayers[prayerId] = current;
+      playSound(current.jamaah ? 'prayer' : 'uncheck');
+      saveState();
+      renderAll();
+    }
+
+    function togglePrayerQaza(event, prayerId) {
+      event.stopPropagation();
+      const log = getDayLog(state.selectedDateKey);
+      const current = log.prayers[prayerId] || { status: 'unlogged', jamaah: false };
+      if (current.status === 'qaza') {
+        current.status = 'unlogged';
+        playSound('uncheck');
+      } else {
+        current.status = 'qaza';
+        current.jamaah = false;
+        playSound('check');
+      }
+      log.prayers[prayerId] = current;
+      saveState();
+      renderAll();
+    }
+
+    function markAllPrayersToday() {
+      const log = getDayLog(state.selectedDateKey);
+      const allDone = state.data.prayersMeta.every(p => log.prayers[p.id] && log.prayers[p.id].status === 'ontime');
+      state.data.prayersMeta.forEach(p => {
+        log.prayers[p.id] = {
+          status: allDone ? 'unlogged' : 'ontime',
+          jamaah: allDone ? false : (log.prayers[p.id]?.jamaah || false)
+        };
+      });
+      playSound(allDone ? 'uncheck' : 'celebrate');
+      saveState();
+      renderAll();
+    }
+
+    function openInlinePrayerTimeEdit(event, prayerId) {
+      event.stopPropagation();
+      const p = state.data.prayersMeta.find(x => x.id === prayerId);
+      if (!p) return;
+      openEditModal('prayer-time', p.id);
+    }
+
+    function toggleSpiritualDeed(deedId) {
+      const log = getDayLog(state.selectedDateKey);
+      log.spiritualDeeds[deedId] = !log.spiritualDeeds[deedId];
+      playSound(log.spiritualDeeds[deedId] ? 'prayer' : 'uncheck');
+      saveState();
+      renderAll();
+    }
+
+    function deleteSpiritualDeed(event, deedId) {
+      event.stopPropagation();
+      state.data.spiritualDeedsMeta = state.data.spiritualDeedsMeta.filter(d => d.id !== deedId);
+      saveState();
+      renderAll();
+    }
+
+    function adjustQuranPages(delta) {
+      const log = getDayLog(state.selectedDateKey);
+      log.quranPages = Math.max(0, (log.quranPages || 0) + delta);
+      playSound(delta > 0 ? 'check' : 'uncheck');
+      saveState();
+      renderAll();
+    }
+
+    /**
+     * PRIORITY COMMAND STACK INTERACTIONS
+     */
+    function togglePriorityTask(taskId) {
+      const log = getDayLog(state.selectedDateKey);
+      log.tasksDone[taskId] = !log.tasksDone[taskId];
+      state.lastPopId = `task-${taskId}-${state.selectedDateKey}`;
+      playSound(log.tasksDone[taskId] ? 'check' : 'uncheck');
+      saveState();
+      checkFullDayCelebration(state.selectedDateKey);
+      renderAll();
+    }
+
+    function cycleTaskPriority(event, taskId) {
+      event.stopPropagation();
+      const task = state.data.tasks.find(t => t.id === taskId);
+      if (!task) return;
+      const map = { P1: 'P2', P2: 'P3', P3: 'P1' };
+      task.priority = map[task.priority] || 'P1';
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function moveTaskWithinTier(event, taskId, dir) {
+      event.stopPropagation();
+      const target = state.data.tasks.find(t => t.id === taskId);
+      if (!target) return;
+      const sameTier = state.data.tasks
+        .filter(t => t.priority === target.priority)
+        .sort((a, b) => (a.order || 0) - (b.order || 0));
+      const idx = sameTier.findIndex(t => t.id === taskId);
+      const swapIdx = idx + dir;
+      if (swapIdx < 0 || swapIdx >= sameTier.length) return;
+      sameTier.forEach((t, i) => { t.order = i + 1; });
+      const tmp = sameTier[idx].order;
+      sameTier[idx].order = sameTier[swapIdx].order;
+      sameTier[swapIdx].order = tmp;
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function handleAddPriorityTask(e) {
+      e.preventDefault();
+      const titleEl = document.getElementById('new-task-title');
+      const prioEl = document.getElementById('new-task-priority');
+      const estEl = document.getElementById('new-task-est');
+      const title = titleEl.value.trim();
+      if (!title) return;
+      const priority = prioEl.value || 'P1';
+      const estimate = estEl.value.trim() || '30m';
+
+      state.data.tasks.push({
+        id: 't-' + Date.now(),
+        title,
+        priority,
+        order: state.data.tasks.filter(t => t.priority === priority).length + 1,
+        estimate
+      });
+      titleEl.value = '';
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function deletePriorityTask(event, taskId) {
+      event.stopPropagation();
+      state.data.tasks = state.data.tasks.filter(t => t.id !== taskId);
+      playSound('uncheck');
+      saveState();
+      renderAll();
+    }
+
+    /**
+     * DAILY HABITS INTERACTIONS
+     */
+    function toggleHabitForDate(habitId, dateKey = state.selectedDateKey) {
+      const log = getDayLog(dateKey);
+      log.habitsDone[habitId] = !log.habitsDone[habitId];
+      state.lastPopId = `habit-${habitId}-${dateKey}`;
+      playSound(log.habitsDone[habitId] ? 'check' : 'uncheck');
+      saveState();
+      checkFullDayCelebration(dateKey);
+      renderAll();
+    }
+
+    function handleQuickAddHabit(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-habit-name');
+      const cat = document.getElementById('new-habit-category');
+      const name = input.value.trim();
+      if (!name) return;
+      state.data.habits.push({
+        id: 'h-' + Date.now(),
+        name,
+        target: 'Daily consistency ritual',
+        category: cat.value || 'fitness'
+      });
+      input.value = '';
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function deleteHabit(event, habitId) {
+      event.stopPropagation();
+      state.data.habits = state.data.habits.filter(h => h.id !== habitId);
+      playSound('uncheck');
+      saveState();
+      renderAll();
+    }
+
+    /**
+     * WEEKLY & MONTHLY GOALS INTERACTIONS
+     */
+    function handleAddWeeklyGoal(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-weekly-goal-input');
+      const title = input.value.trim();
+      if (!title) return;
+      state.data.weeklyGoals.push({ id: 'wg-' + Date.now(), title, done: false });
+      input.value = '';
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function toggleWeeklyGoal(goalId) {
+      const g = state.data.weeklyGoals.find(x => x.id === goalId);
+      if (!g) return;
+      g.done = !g.done;
+      playSound(g.done ? 'check' : 'uncheck');
+      saveState();
+      renderAll();
+    }
+
+    function deleteWeeklyGoal(goalId) {
+      state.data.weeklyGoals = state.data.weeklyGoals.filter(x => x.id !== goalId);
+      saveState();
+      renderAll();
+    }
+
+    function handleAddMonthlyGoal(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-monthly-goal-input');
+      const title = input.value.trim();
+      if (!title) return;
+      state.data.monthlyGoals.push({ id: 'mg-' + Date.now(), title, progress: 0 });
+      input.value = '';
+      playSound('check');
+      saveState();
+      renderAll();
+    }
+
+    function updateMonthlyGoalProgress(goalId, val) {
+      const g = state.data.monthlyGoals.find(x => x.id === goalId);
+      if (!g) return;
+      g.progress = Math.min(100, Math.max(0, Number(val)));
+      saveState();
+      renderWeeklyAndMonthlyHub();
+      renderKpiStrip();
+    }
+
+    function deleteMonthlyGoal(goalId) {
+      state.data.monthlyGoals = state.data.monthlyGoals.filter(x => x.id !== goalId);
+      saveState();
+      renderAll();
+    }
+
+    /**
+     * UNIVERSAL EDIT MODAL (EDIT ANY ITEM IN THE APP)
+     */
+    function openAddSpiritualDeedModal() {
+      openEditModal('spiritual-new', '');
+    }
+
+    function openEditModal(type, id = '') {
+      const modal = document.getElementById('universal-edit-modal');
+      const heading = document.getElementById('edit-modal-heading');
+      const typeEl = document.getElementById('edit-item-type');
+      const idEl = document.getElementById('edit-item-id');
+      const primaryLabel = document.getElementById('edit-label-primary');
+      const primaryInput = document.getElementById('edit-input-primary');
+      const secondaryWrap = document.getElementById('edit-secondary-wrap');
+      const secondaryLabel = document.getElementById('edit-label-secondary');
+      const secondaryInput = document.getElementById('edit-input-secondary');
+      const selectWrap = document.getElementById('edit-select-wrap');
+      const selectLabel = document.getElementById('edit-label-select');
+      const selectInput = document.getElementById('edit-input-select');
+
+      typeEl.value = type;
+      idEl.value = id;
+      secondaryWrap.classList.remove('hidden');
+      selectWrap.classList.add('hidden');
+      primaryInput.type = 'text';
+      secondaryInput.type = 'text';
+
+      if (type === 'prayer-time') {
+        const p = state.data.prayersMeta.find(x => x.id === id);
+        if (!p) return;
+        heading.textContent = `Edit ${p.name} Prayer Schedule`;
+        primaryLabel.textContent = 'Prayer Display Name';
+        primaryInput.value = p.name;
+        secondaryLabel.textContent = 'Prayer Time (24h HH:MM)';
+        secondaryInput.type = 'time';
+        secondaryInput.value = p.time;
+      } else if (type === 'spiritual-edit' || type === 'spiritual-new') {
+        const d = state.data.spiritualDeedsMeta.find(x => x.id === id);
+        heading.textContent = d ? 'Edit Spiritual Goal' : 'Add Spiritual Goal';
+        primaryLabel.textContent = 'Spiritual Deed Title *';
+        primaryInput.value = d ? d.name : '';
+        secondaryLabel.textContent = 'Target / Description';
+        secondaryInput.value = d ? d.target : 'Daily Sunnah / Remembrance';
+      } else if (type === 'task-edit') {
+        const t = state.data.tasks.find(x => x.id === id);
+        if (!t) return;
+        heading.textContent = 'Edit Priority Task';
+        primaryLabel.textContent = 'Task Title *';
+        primaryInput.value = t.title;
+        secondaryLabel.textContent = 'Time Estimate (e.g., 45m, 1h)';
+        secondaryInput.value = t.estimate || '30m';
+        selectWrap.classList.remove('hidden');
+        selectLabel.textContent = 'Importance Tier';
+        selectInput.innerHTML = `
+          <option value="P1">🔥 P1 — Critical (Must-Do Today)</option>
+          <option value="P2">⚡ P2 — Important (Core Progress)</option>
+          <option value="P3">📌 P3 — Secondary (Quick Win)</option>
+        `;
+        selectInput.value = t.priority;
+      } else if (type === 'habit-edit' || type === 'habit-new') {
+        const h = state.data.habits.find(x => x.id === id);
+        heading.textContent = h ? 'Edit Daily Habit' : 'Create Custom Daily Habit';
+        primaryLabel.textContent = 'Habit Name *';
+        primaryInput.value = h ? h.name : '';
+        secondaryLabel.textContent = 'Daily Target / Cue';
+        secondaryInput.value = h ? h.target : 'Consistent daily execution';
+        selectWrap.classList.remove('hidden');
+        selectLabel.textContent = 'Habit Category';
+        selectInput.innerHTML = `
+          <option value="fitness">💪 Fitness & Conditioning</option>
+          <option value="deepwork">🧠 Deep Work & Study</option>
+          <option value="mindfulness">🌿 Mindfulness & Focus</option>
+          <option value="routine">🌙 Recovery & Routine</option>
+        `;
+        selectInput.value = h ? h.category : 'fitness';
+      } else if (type === 'weekly-goal') {
+        const g = state.data.weeklyGoals.find(x => x.id === id);
+        if (!g) return;
+        heading.textContent = 'Edit Weekly Sprint Goal';
+        primaryLabel.textContent = 'Weekly Goal Title *';
+        primaryInput.value = g.title;
+        secondaryWrap.classList.add('hidden');
+      } else if (type === 'monthly-goal') {
+        const g = state.data.monthlyGoals.find(x => x.id === id);
+        if (!g) return;
+        heading.textContent = 'Edit Monthly Milestone';
+        primaryLabel.textContent = 'Milestone Title *';
+        primaryInput.value = g.title;
+        secondaryLabel.textContent = 'Completion Percentage (0 - 100)';
+        secondaryInput.type = 'number';
+        secondaryInput.min = 0;
+        secondaryInput.max = 100;
+        secondaryInput.value = g.progress;
+      }
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      primaryInput.focus();
+    }
+
+    function closeEditModal() {
+      const modal = document.getElementById('universal-edit-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveUniversalEdit(e) {
+      e.preventDefault();
+      const type = document.getElementById('edit-item-type').value;
+      const id = document.getElementById('edit-item-id').value;
+      const primaryVal = document.getElementById('edit-input-primary').value.trim();
+      const secondaryVal = document.getElementById('edit-input-secondary').value.trim();
+      const selectVal = document.getElementById('edit-input-select').value;
+
+      if (!primaryVal) return;
+
+      if (type === 'prayer-time') {
+        const p = state.data.prayersMeta.find(x => x.id === id);
+        if (p) {
+          p.name = primaryVal;
+          if (secondaryVal) p.time = secondaryVal;
+        }
+      } else if (type === 'spiritual-edit') {
+        const d = state.data.spiritualDeedsMeta.find(x => x.id === id);
+        if (d) {
+          d.name = primaryVal;
+          d.target = secondaryVal || 'Daily remembrance';
+        }
+      } else if (type === 'spiritual-new') {
+        state.data.spiritualDeedsMeta.push({
+          id: 'sd-' + Date.now(),
+          name: primaryVal,
+          target: secondaryVal || 'Daily Sunnah / Remembrance'
+        });
+      } else if (type === 'task-edit') {
+        const t = state.data.tasks.find(x => x.id === id);
+        if (t) {
+          t.title = primaryVal;
+          t.estimate = secondaryVal || '30m';
+          t.priority = selectVal || 'P1';
+        }
+      } else if (type === 'habit-edit') {
+        const h = state.data.habits.find(x => x.id === id);
+        if (h) {
+          h.name = primaryVal;
+          h.target = secondaryVal || 'Daily target';
+          h.category = selectVal || 'fitness';
+        }
+      } else if (type === 'habit-new') {
+        state.data.habits.push({
+          id: 'h-' + Date.now(),
+          name: primaryVal,
+          target: secondaryVal || 'Daily consistency target',
+          category: selectVal || 'fitness'
+        });
+      } else if (type === 'weekly-goal') {
+        const g = state.data.weeklyGoals.find(x => x.id === id);
+        if (g) g.title = primaryVal;
+      } else if (type === 'monthly-goal') {
+        const g = state.data.monthlyGoals.find(x => x.id === id);
+        if (g) {
+          g.title = primaryVal;
+          g.progress = Math.min(100, Math.max(0, Number(secondaryVal) || 0));
+        }
+      }
+
+      saveState();
+      closeEditModal();
+      playSound('check');
+      updateLiveClock();
+      renderAll();
+    }
+
+    /**
+     * WORKSPACE MODAL ("START FRESH FROM TODAY")
+     */
+    function openWorkspaceModal() {
+      const modal = document.getElementById('workspace-modal');
+      document.getElementById('journey-start-date-input').value = state.data.journeyStartDate;
+      document.getElementById('workspace-modal-msg').classList.add('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeWorkspaceModal() {
+      const modal = document.getElementById('workspace-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function updateJourneyStartDate() {
+      const val = document.getElementById('journey-start-date-input').value;
+      if (!val) return;
+      state.data.journeyStartDate = val;
+      saveState();
+      updateLiveClock();
+      renderAll();
+      const msg = document.getElementById('workspace-modal-msg');
+      msg.textContent = `✓ Journey Start Date updated to ${val}`;
+      msg.classList.remove('hidden');
+      playSound('check');
+    }
+
+    function startFreshFromToday() {
+      const todayKey = getRealTodayKey();
+      state.data.journeyStartDate = todayKey;
+      state.data.dateLogs = {};
+      state.selectedDateKey = todayKey;
+      saveState();
+      closeWorkspaceModal();
+      playSound('celebrate');
+      updateLiveClock();
+      renderAll();
+    }
+
+    function copyBackupJson() {
+      const str = JSON.stringify(state.data, null, 2);
+      const area = document.createElement('textarea');
+      area.value = str;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand('copy');
+      document.body.removeChild(area);
+      const msg = document.getElementById('workspace-modal-msg');
+      msg.textContent = '✓ Full JSON backup copied to clipboard!';
+      msg.classList.remove('hidden');
+      playSound('check');
+    }
+
+    function checkFullDayCelebration(dateKey) {
+      const m = getMetricsForDate(dateKey);
+      if (m.overallPct === 100 && m.totalItems > 0) {
+        playSound('celebrate');
+        triggerConfetti();
+      }
+    }
+
+    /**
+     * MASTER RENDER PIPELINE
+     */
+    function renderAll() {
+      renderHeaderWeekStrip();
+      renderKpiStrip();
+      renderPrayerSanctuary();
+      renderPriorityStack();
+      renderHabitsModule();
+      renderHorizonLayout();
+      renderWeeklyAndMonthlyHub();
+    }
+
+    /**
+     * 1. RENDER HEADER ACTIVE DATE & 7-DAY REAL CALENDAR STRIP
+     */
+    function renderHeaderWeekStrip() {
+      const todayKey = getRealTodayKey();
+      const selDate = parseDateKey(state.selectedDateKey);
+      const isToday = state.selectedDateKey === todayKey;
+
+      const labelEl = document.getElementById('viewing-date-label');
+      const ctxEl = document.getElementById('viewing-date-Context');
+      const fmtFull = selDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      labelEl.textContent = isToday ? `Today · ${fmtFull}` : fmtFull;
+      ctxEl.textContent = state.selectedDateKey < state.data.journeyStartDate
+        ? 'BEFORE JOURNEY START (CLICK ANY ITEM TO BACKFILL)'
+        : isToday
+          ? 'LOGGING TODAY (LIVE)'
+          : 'VIEWING SELECTED DATE';
+
+      const weekDates = getWeekDatesFor(state.selectedDateKey);
+      const firstFmt = weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const lastFmt = weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      document.getElementById('week-range-label').textContent = `${firstFmt} – ${lastFmt}`;
+
+      const strip = document.getElementById('top-week-strip');
+      strip.innerHTML = weekDates.map((dObj, idx) => {
+        const k = toDateKey(dObj);
+        const m = getMetricsForDate(k);
+        const isSel = k === state.selectedDateKey;
+        const isTod = k === todayKey;
+        const beforeStart = k < state.data.journeyStartDate;
+
+        let cls = 'theme-card hover:border-amber-500/50';
+        if (isSel) {
+          cls = 'bg-amber-500 text-slate-950 font-bold border-2 border-amber-300 shadow-md shadow-amber-500/20';
+        } else if (beforeStart && m.completedItems === 0) {
+          cls = 'hatched-cell border border-dashed border-slate-700/60 opacity-65';
+        }
+
+        return `
+          <button onclick="selectDateKey('${k}')"
+            class="relative py-2 px-1.5 rounded-2xl transition-all flex flex-col items-center justify-center ${cls}">
+            <div class="flex items-center gap-1">
+              <span class="text-[10px] font-mono uppercase ${isSel ? 'text-slate-950 font-bold' : 'text-theme-muted'}">${DAYS_SHORT[idx]}</span>
+              ${isTod ? `<span class="px-1 rounded text-[8px] font-mono font-extrabold ${isSel ? 'bg-slate-950 text-amber-400' : 'bg-emerald-500 text-slate-950'}">TODAY</span>` : ''}
+            </div>
+            <span class="font-display font-extrabold text-sm mt-0.5 tabular-nums ${isSel ? 'text-slate-950' : 'text-theme-primary'}">
+              ${dObj.getDate()}
+            </span>
+            <span class="text-[9px] font-mono mt-0.5 tabular-nums ${
+              isSel ? 'text-slate-900 font-bold' : beforeStart && m.completedItems === 0 ? 'text-theme-muted' : 'text-emerald-400'
+            }">
+              ${beforeStart && m.completedItems === 0 ? 'Pre-Start' : `${m.overallPct}%`}
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    /**
+     * 2. RENDER 4 KPI SUMMARY CARDS
+     */
+    function renderKpiStrip() {
+      const m = getMetricsForDate(state.selectedDateKey);
+      const isToday = state.selectedDateKey === getRealTodayKey();
+
+      document.getElementById('kpi-day-title').textContent = isToday
+        ? "TODAY'S ALIGNMENT"
+        : `ALIGNMENT (${state.selectedDateKey})`;
+      document.getElementById('kpi-overall-pct').textContent = `${m.overallPct}%`;
+      document.getElementById('kpi-overall-items').textContent = `${m.completedItems}/${m.totalItems} done`;
+      document.getElementById('kpi-ring-text').textContent = `${m.overallPct}%`;
+
+      const ring = document.getElementById('kpi-ring-circle');
+      const circ = 175.9;
+      ring.style.strokeDashoffset = circ - (m.overallPct / 100) * circ;
+
+      document.getElementById('kpi-prayer-fraction').textContent = `${m.prayersDone} / 5`;
+      document.getElementById('kpi-jamaah-pill').textContent = `★ ${m.jamaahCount} Jama'ah`;
+
+      document.getElementById('kpi-p1-fraction').textContent = `${m.p1Done} / ${m.p1Total}`;
+      document.getElementById('kpi-all-tasks-sub').textContent = `${m.doneTasks}/${m.totalTasks} total priority tasks done`;
+
+      const realStreak = calculateRealStreak();
+      document.getElementById('kpi-real-streak').textContent = realStreak;
+
+      const avgMonthGoals = state.data.monthlyGoals.length > 0
+        ? Math.round(state.data.monthlyGoals.reduce((a, b) => a + (b.progress || 0), 0) / state.data.monthlyGoals.length)
+        : 0;
+      document.getElementById('kpi-month-goals-sub').textContent = `Monthly milestones avg: ${avgMonthGoals}%`;
+    }
+
+    /**
+     * 3. RENDER MODULE 01: SACRED PRAYER SANCTUARY
+     */
+    function renderPrayerSanctuary() {
+      const dateKey = state.selectedDateKey;
+      const log = getDayLog(dateKey);
+      const m = getMetricsForDate(dateKey);
+
+      document.getElementById('prayer-section-date-pill').textContent =
+        dateKey === getRealTodayKey() ? `Logging Today (${dateKey})` : `Logging Date: ${dateKey}`;
+      document.getElementById('arc-status-summary').textContent =
+        `${m.prayersDone}/5 Fard Completed (${m.jamaahCount} ★ Jama'ah)`;
+
+      // Celestial Horizon Nodes
+      const arcGroup = document.getElementById('celestial-arc-nodes');
+      arcGroup.innerHTML = state.data.prayersMeta.map(p => {
+        const entry = log.prayers[p.id] || { status: 'unlogged', jamaah: false };
+        const isOnTime = entry.status === 'ontime';
+        const isQaza = entry.status === 'qaza';
+        const fill = isOnTime ? '#10B981' : isQaza ? '#F59E0B' : 'var(--bg-card)';
+        const stroke = entry.jamaah ? '#FBBF24' : (isOnTime ? '#34D399' : '#64748B');
+
+        return `
+          <g class="cursor-pointer" onclick="togglePrayerCard('${p.id}')">
+            ${(isOnTime || isQaza) ? `<circle cx="${p.arcX}" cy="${p.arcY}" r="14" fill="${fill}" fill-opacity="0.22" />` : ''}
+            <circle cx="${p.arcX}" cy="${p.arcY}" r="8" fill="${fill}" stroke="${stroke}" stroke-width="2.5" />
+            <text x="${p.arcX}" y="${p.arcY - 13}" text-anchor="middle" fill="var(--text-primary)" class="font-mono text-[10px] font-bold">${p.name}</text>
+            <text x="${p.arcX}" y="${p.arcY + 21}" text-anchor="middle" fill="var(--text-muted)" class="font-mono text-[9px]">${p.time}</text>
+          </g>
+        `;
+      }).join('');
+
+      // 5 Prayer Cards
+      const grid = document.getElementById('five-prayers-grid');
+      grid.innerHTML = state.data.prayersMeta.map(p => {
+        const entry = log.prayers[p.id] || { status: 'unlogged', jamaah: false };
+        const isOnTime = entry.status === 'ontime';
+        const isQaza = entry.status === 'qaza';
+        const pop = state.lastPopId === `prayer-${p.id}-${dateKey}`;
+
+        let borderCls = 'theme-card';
+        let statusBadge = '<span class="text-theme-muted">Tap to Log</span>';
+        if (isOnTime) {
+          borderCls = 'bg-emerald-500/15 border-2 border-emerald-500 shadow-sm shadow-emerald-500/10';
+          statusBadge = '<span class="text-emerald-400 font-bold">✓ On Time</span>';
+        } else if (isQaza) {
+          borderCls = 'bg-amber-500/15 border-2 border-amber-500';
+          statusBadge = '<span class="text-amber-400 font-bold">↺ Qaza Logged</span>';
+        }
+
+        return `
+          <div onclick="togglePrayerCard('${p.id}')"
+            class="rounded-2xl p-3.5 cursor-pointer select-none flex flex-col justify-between transition-all ${borderCls} ${pop ? 'animate-check-pop' : ''}">
+            
+            <div class="flex items-start justify-between gap-1">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-display font-bold text-sm text-theme-primary">${escapeHtml(p.name)}</span>
+                  <span class="text-xs text-theme-muted">${p.arabic}</span>
+                </div>
+                <!-- Clickable Time Badge for Direct Editing -->
+                <button type="button" onclick="openInlinePrayerTimeEdit(event, '${p.id}')"
+                  title="Click to edit prayer time"
+                  class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/25 hover:bg-amber-500/20 text-[11px] font-mono text-amber-400 border border-amber-500/30">
+                  <span>🕒 ${p.time}</span>
+                  <span class="text-[9px] opacity-75">✎</span>
+                </button>
+              </div>
+
+              <div class="w-6 h-6 rounded-lg flex items-center justify-center border ${
+                isOnTime
+                  ? 'bg-emerald-500 border-emerald-400 text-slate-950 font-bold'
+                  : isQaza
+                    ? 'bg-amber-500 border-amber-400 text-slate-950 font-bold'
+                    : 'border-slate-600'
+              }">
+                ${(isOnTime || isQaza) ? '✓' : ''}
+              </div>
+            </div>
+
+            <div class="my-2.5 text-xs font-mono">
+              ${statusBadge}
+            </div>
+
+            <div class="flex items-center gap-1.5 pt-2 border-t border-theme">
+              <button type="button" onclick="togglePrayerJamaah(event, '${p.id}')"
+                class="flex-1 py-1 px-1.5 rounded-lg text-[10px] font-mono font-bold border transition-all ${
+                  entry.jamaah
+                    ? 'bg-amber-500 text-slate-950 border-amber-400'
+                    : 'theme-panel text-theme-muted hover:text-amber-400'
+                }">
+                ★ Jama'ah
+              </button>
+              <button type="button" onclick="togglePrayerQaza(event, '${p.id}')"
+                class="py-1 px-2 rounded-lg text-[10px] font-mono font-bold border transition-all ${
+                  isQaza
+                    ? 'bg-amber-500 text-slate-950 border-amber-400'
+                    : 'theme-panel text-theme-muted hover:text-amber-400'
+                }">
+                Qaza
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Spiritual Deeds List
+      const deedsList = document.getElementById('spiritual-deeds-list');
+      deedsList.innerHTML = state.data.spiritualDeedsMeta.map(deed => {
+        const done = Boolean(log.spiritualDeeds && log.spiritualDeeds[deed.id]);
+        return `
+          <div onclick="toggleSpiritualDeed('${deed.id}')"
+            class="group flex items-center justify-between gap-2 p-2.5 rounded-xl cursor-pointer transition-all ${
+              done ? 'bg-emerald-500/15 border border-emerald-500/40' : 'theme-panel hover:border-emerald-500/40'
+            }">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-5 h-5 rounded-md flex items-center justify-center border text-xs font-bold flex-shrink-0 ${
+                done ? 'bg-emerald-500 border-emerald-400 text-slate-950' : 'border-slate-500'
+              }">${done ? '✓' : ''}</div>
+              <div class="min-w-0">
+                <p class="text-xs font-semibold truncate ${done ? 'line-through text-theme-muted' : 'text-theme-primary'}">${escapeHtml(deed.name)}</p>
+                <p class="text-[10px] text-theme-muted truncate">${escapeHtml(deed.target)}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1 flex-shrink-0">
+              <button type="button" onclick="event.stopPropagation(); openEditModal('spiritual-edit', '${deed.id}')"
+                title="Edit Spiritual Goal"
+                class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">✎</button>
+              <button type="button" onclick="deleteSpiritualDeed(event, '${deed.id}')"
+                title="Delete Spiritual Goal"
+                class="p-1 rounded hover:bg-rose-500/20 text-theme-muted hover:text-rose-400 text-xs">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('quran-pages-display').textContent = `${log.quranPages || 0} pgs`;
+    }
+
+    /**
+     * 4. RENDER MODULE 02: PRIORITY COMMAND STACK
+     */
+    function renderPriorityStack() {
+      const dateKey = state.selectedDateKey;
+      const log = getDayLog(dateKey);
+      document.getElementById('priority-date-indicator').textContent =
+        dateKey === getRealTodayKey() ? 'Today' : dateKey;
+
+      const rank = { P1: 1, P2: 2, P3: 3 };
+      const sorted = [...state.data.tasks].sort((a, b) => {
+        if (rank[a.priority] !== rank[b.priority]) return rank[a.priority] - rank[b.priority];
+        return (a.order || 0) - (b.order || 0);
+      });
+
+      const filterBar = document.getElementById('priority-filter-bar');
+      const filters = [
+        { k: 'ALL', label: `All (${sorted.length})` },
+        { k: 'P1', label: `🔥 P1 Critical (${sorted.filter(t => t.priority === 'P1').length})` },
+        { k: 'P2', label: `⚡ P2 Important (${sorted.filter(t => t.priority === 'P2').length})` },
+        { k: 'P3', label: `📌 P3 Secondary (${sorted.filter(t => t.priority === 'P3').length})` },
+        { k: 'PENDING', label: `Pending (${sorted.filter(t => !log.tasksDone[t.id]).length})` }
+      ];
+
+      filterBar.innerHTML = filters.map(f => {
+        const active = state.priorityFilter === f.k;
+        return `
+          <button onclick="state.priorityFilter='${f.k}'; renderPriorityStack();"
+            class="px-2.5 py-1 rounded-xl text-xs font-mono font-semibold border transition-all ${
+              active
+                ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold'
+                : 'theme-card text-theme-secondary hover:border-amber-500/40'
+            }">${f.label}</button>
+        `;
+      }).join('');
+
+      const visible = sorted.filter(t => {
+        if (state.priorityFilter === 'P1') return t.priority === 'P1';
+        if (state.priorityFilter === 'P2') return t.priority === 'P2';
+        if (state.priorityFilter === 'P3') return t.priority === 'P3';
+        if (state.priorityFilter === 'PENDING') return !log.tasksDone[t.id];
+        return true;
+      });
+
+      const tierConfig = {
+        P1: {
+          heading: '🔥 P1 — CRITICAL (MUST-DO TODAY)',
+          badge: 'bg-rose-500/20 text-amber-300 border-amber-500/50',
+          border: 'border-l-4 border-l-amber-500'
+        },
+        P2: {
+          heading: '⚡ P2 — IMPORTANT (CORE PROGRESS)',
+          badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/50',
+          border: 'border-l-4 border-l-cyan-400'
+        },
+        P3: {
+          heading: '📌 P3 — SECONDARY (QUICK WINS)',
+          badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+          border: 'border-l-4 border-l-emerald-500'
+        }
+      };
+
+      const container = document.getElementById('priority-stack-list');
+      if (visible.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center theme-card rounded-2xl text-xs text-theme-muted">No tasks in this view. Add one above!</div>`;
+        return;
+      }
+
+      container.innerHTML = ['P1', 'P2', 'P3'].map(tier => {
+        const items = visible.filter(t => t.priority === tier);
+        if (items.length === 0) return '';
+        const cfg = tierConfig[tier];
+        const doneCount = items.filter(t => log.tasksDone[t.id]).length;
+
+        return `
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-mono font-bold text-theme-muted px-1">
+              <span>${cfg.heading}</span>
+              <span>${doneCount}/${items.length}</span>
+            </div>
+            <div class="space-y-2">
+              ${items.map(task => {
+                const isDone = Boolean(log.tasksDone[task.id]);
+                const pop = state.lastPopId === `task-${task.id}-${dateKey}`;
+                return `
+                  <div onclick="togglePriorityTask('${task.id}')"
+                    class="theme-card ${cfg.border} rounded-2xl p-3.5 flex items-center justify-between gap-2 cursor-pointer select-none ${
+                      isDone ? 'opacity-65' : ''
+                    } ${pop ? 'animate-check-pop' : ''}">
+                    
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                      <div class="w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 font-bold text-xs ${
+                        isDone ? 'bg-amber-500 border-amber-400 text-slate-950' : 'border-slate-500'
+                      }">${isDone ? '✓' : ''}</div>
+
+                      <button type="button" onclick="cycleTaskPriority(event, '${task.id}')"
+                        title="Click to cycle P1 / P2 / P3 importance"
+                        class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold border flex-shrink-0 ${cfg.badge}">
+                        ${task.priority}
+                      </button>
+
+                      <div class="min-w-0 flex-1">
+                        <p class="text-xs sm:text-sm font-semibold truncate ${isDone ? 'line-through text-theme-muted' : 'text-theme-primary'}">
+                          ${escapeHtml(task.title)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-1 flex-shrink-0">
+                      <span class="text-[10px] font-mono text-theme-muted px-1.5 py-0.5 rounded bg-black/20">${escapeHtml(task.estimate || '30m')}</span>
+                      <button type="button" onclick="moveTaskWithinTier(event, '${task.id}', -1)" title="Move Up"
+                        class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">↑</button>
+                      <button type="button" onclick="moveTaskWithinTier(event, '${task.id}', 1)" title="Move Down"
+                        class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">↓</button>
+                      <button type="button" onclick="event.stopPropagation(); openEditModal('task-edit', '${task.id}')" title="Edit Task"
+                        class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-cyan-400 text-xs">✎</button>
+                      <button type="button" onclick="deletePriorityTask(event, '${task.id}')" title="Delete Task"
+                        class="p-1 rounded hover:bg-rose-500/20 text-theme-muted hover:text-rose-400 text-xs">✕</button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * 5. RENDER MODULE 03: DAILY HABITS & 7-DAY MATRIX
+     */
+    function renderHabitsModule() {
+      const weekDates = getWeekDatesFor(state.selectedDateKey);
+      const todayKey = getRealTodayKey();
+
+      // Column headers
+      const colHeaders = document.getElementById('habit-week-col-headers');
+      colHeaders.innerHTML = weekDates.map((d, i) => {
+        const k = toDateKey(d);
+        const isSel = k === state.selectedDateKey;
+        return `
+          <button onclick="selectDateKey('${k}')"
+            class="py-0.5 rounded text-[10px] font-mono ${
+              isSel ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-theme-muted hover:text-theme-primary'
+            }">
+            ${DAYS_SHORT[i][0]}<span class="block text-[9px]">${d.getDate()}</span>
+          </button>
+        `;
+      }).join('');
+
+      const catBadge = {
+        fitness: 'bg-emerald-500',
+        deepwork: 'bg-cyan-400',
+        mindfulness: 'bg-violet-400',
+        routine: 'bg-amber-400'
+      };
+
+      const rowsContainer = document.getElementById('habit-rows-list');
+      if (state.data.habits.length === 0) {
+        rowsContainer.innerHTML = `<div class="p-6 text-center text-xs text-theme-muted">No habits yet. Add one above!</div>`;
+        return;
+      }
+
+      rowsContainer.innerHTML = state.data.habits.map(habit => {
+        const activeLog = getDayLog(state.selectedDateKey);
+        const checkedOnSelected = Boolean(activeLog.habitsDone[habit.id]);
+        const dotColor = catBadge[habit.category] || 'bg-cyan-400';
+
+        return `
+          <div class="theme-card rounded-2xl p-3 grid grid-cols-12 items-center gap-2">
+            <!-- Left 6 cols: Checkbox + Habit Name -->
+            <div onclick="toggleHabitForDate('${habit.id}', '${state.selectedDateKey}')"
+              class="col-span-6 flex items-center gap-2.5 min-w-0 cursor-pointer">
+              <div class="w-6 h-6 rounded-lg border-2 flex items-center justify-center flex-shrink-0 font-bold text-xs ${
+                checkedOnSelected ? 'bg-cyan-400 border-cyan-300 text-slate-950' : 'border-slate-500'
+              }">${checkedOnSelected ? '✓' : ''}</div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full ${dotColor} flex-shrink-0"></span>
+                  <p class="text-xs sm:text-sm font-semibold truncate ${checkedOnSelected ? 'line-through text-theme-muted' : 'text-theme-primary'}">
+                    ${escapeHtml(habit.name)}
+                  </p>
+                </div>
+                <p class="text-[10px] text-theme-muted truncate pl-3.5">${escapeHtml(habit.target)}</p>
+              </div>
+            </div>
+
+            <!-- Middle 5 cols: 7-Day Real Calendar Squares -->
+            <div class="col-span-5 grid grid-cols-7 gap-1 justify-items-center">
+              ${weekDates.map(d => {
+                const k = toDateKey(d);
+                const dLog = state.data.dateLogs[k];
+                const isDone = Boolean(dLog && dLog.habitsDone && dLog.habitsDone[habit.id]);
+                const beforeStart = k < state.data.journeyStartDate;
+                const isSel = k === state.selectedDateKey;
+
+                let cellCls = 'theme-panel border-slate-700 text-transparent';
+                if (isDone) {
+                  cellCls = 'bg-cyan-400 border-cyan-300 text-slate-950 font-bold';
+                } else if (beforeStart) {
+                  cellCls = 'hatched-cell border-dashed border-slate-700/60 text-transparent opacity-60';
+                } else if (isSel) {
+                  cellCls = 'border-2 border-amber-400 text-transparent';
+                }
+
+                return `
+                  <button type="button" onclick="toggleHabitForDate('${habit.id}', '${k}')"
+                    title="${escapeHtml(habit.name)} (${k})"
+                    class="w-6 h-6 rounded-lg border flex items-center justify-center text-xs transition-transform hover:scale-110 ${cellCls}">
+                    ✓
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <!-- Right 1 col: Edit & Delete -->
+            <div class="col-span-1 flex items-center justify-end gap-1">
+              <button type="button" onclick="openEditModal('habit-edit', '${habit.id}')"
+                title="Edit Habit"
+                class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">✎</button>
+              <button type="button" onclick="deleteHabit(event, '${habit.id}')"
+                title="Delete Habit"
+                class="p-1 rounded hover:bg-rose-500/20 text-theme-muted hover:text-rose-400 text-xs">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /**
+     * 6. RENDER MODULE 04: WEEKLY & MONTHLY HORIZON HUB
+     */
+    function renderHorizonLayout() {
+      ['SPLIT', 'WEEKLY', 'MONTHLY'].forEach(tab => {
+        const btn = document.getElementById(`horizon-tab-${tab}`);
+        if (!btn) return;
+        if (state.horizonTab === tab) {
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-violet-500 text-white shadow-xs transition-all';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-mono font-semibold text-theme-secondary hover:text-theme-primary transition-all';
+        }
+      });
+
+      const weeklyPanel = document.getElementById('horizon-weekly-panel');
+      const monthlyPanel = document.getElementById('horizon-monthly-panel');
+
+      if (state.horizonTab === 'SPLIT') {
+        weeklyPanel.className = 'lg:col-span-6 space-y-5';
+        monthlyPanel.className = 'lg:col-span-6 space-y-5';
+      } else if (state.horizonTab === 'WEEKLY') {
+        weeklyPanel.className = 'lg:col-span-12 space-y-5';
+        monthlyPanel.className = 'hidden';
+      } else {
+        weeklyPanel.className = 'hidden';
+        monthlyPanel.className = 'lg:col-span-12 space-y-5';
+      }
+    }
+
+    function renderWeeklyAndMonthlyHub() {
+      renderWeeklyChartAndGoals();
+      renderMonthlyCalendar();
+      renderMonthlyGoals();
+    }
+
+    function renderWeeklyChartAndGoals() {
+      const modes = [
+        { k: 'COMBINED', l: 'Combined' },
+        { k: 'PRAYERS', l: 'Prayers' },
+        { k: 'TASKS', l: 'Priority' },
+        { k: 'HABITS', l: 'Habits' }
+      ];
+      document.getElementById('weekly-chart-filter-tabs').innerHTML = modes.map(m => `
+        <button onclick="state.weeklyChartMode='${m.k}'; renderWeeklyChartAndGoals();"
+          class="px-2 py-1 rounded-lg transition-all ${
+            state.weeklyChartMode === m.k ? 'bg-violet-500 text-white' : 'text-theme-muted hover:text-theme-primary'
+          }">${m.l}</button>
+      `).join('');
+
+      const weekDates = getWeekDatesFor(state.selectedDateKey);
+      const todayKey = getRealTodayKey();
+      let activeDaysCount = 0;
+      let activeDaysSum = 0;
+
+      const barsEl = document.getElementById('weekly-bars-container');
+      barsEl.innerHTML = weekDates.map((dObj, idx) => {
+        const k = toDateKey(dObj);
+        const m = getMetricsForDate(k);
+        const isSel = k === state.selectedDateKey;
+        const isTod = k === todayKey;
+
+        let pct = m.overallPct;
+        if (state.weeklyChartMode === 'PRAYERS') pct = m.prayerPct;
+        if (state.weeklyChartMode === 'TASKS') pct = m.taskPct;
+        if (state.weeklyChartMode === 'HABITS') pct = m.habitPct;
+
+        if (!m.isBeforeStart) {
+          activeDaysCount++;
+          activeDaysSum += pct;
+        }
+
+        const pH = Math.round(m.prayerPct / 3);
+        const tH = Math.round(m.taskPct / 3);
+        const hH = Math.round(m.habitPct / 3);
+
+        let barHtml = '';
+        if (m.isBeforeStart && m.completedItems === 0) {
+          barHtml = `<div class="w-full h-full hatched-cell rounded-lg flex items-center justify-center"><span class="text-[9px] font-mono text-theme-muted -rotate-90">Pre-Start</span></div>`;
+        } else if (state.weeklyChartMode === 'COMBINED') {
+          barHtml = `
+            <div class="w-full h-full flex flex-col justify-end gap-0.5 rounded-lg overflow-hidden">
+              <div class="bar-segment w-full bg-cyan-400" style="height: ${Math.max(2, hH)}%"></div>
+              <div class="bar-segment w-full bg-amber-500" style="height: ${Math.max(2, tH)}%"></div>
+              <div class="bar-segment w-full bg-emerald-500" style="height: ${Math.max(2, pH)}%"></div>
+            </div>
+          `;
+        } else {
+          const color = state.weeklyChartMode === 'PRAYERS'
+            ? 'bg-emerald-500'
+            : state.weeklyChartMode === 'TASKS'
+              ? 'bg-amber-500'
+              : 'bg-cyan-400';
+          barHtml = `<div class="bar-segment w-full rounded-lg ${color}" style="height: ${Math.max(4, pct)}%"></div>`;
+        }
+
+        return `
+          <div onclick="selectDateKey('${k}')" class="flex flex-col items-center h-full justify-end cursor-pointer group">
+            <span class="font-mono text-[10px] font-bold mb-1 tabular-nums ${
+              isSel ? 'text-amber-400' : 'text-theme-muted'
+            }">${m.isBeforeStart && m.completedItems === 0 ? '—' : `${pct}%`}</span>
+
+            <div class="w-full max-w-[38px] h-28 theme-panel rounded-xl p-1 flex items-end border ${
+              isSel ? 'border-amber-400 ring-2 ring-amber-400/20' : ''
+            }">
+              ${barHtml}
+            </div>
+
+            <span class="text-[10px] font-mono font-bold mt-1.5 ${isSel ? 'text-amber-400' : 'text-theme-secondary'}">
+              ${DAYS_SHORT[idx]} ${dObj.getDate()}
+            </span>
+            <span class="text-[8px] font-mono ${isTod ? 'text-emerald-400 font-bold' : 'text-transparent'}">TODAY</span>
+          </div>
+        `;
+      }).join('');
+
+      const avg = activeDaysCount > 0 ? Math.round(activeDaysSum / activeDaysCount) : 0;
+      document.getElementById('weekly-avg-badge').textContent = `Active Days Avg: ${avg}%`;
+
+      // Weekly Sprint Goals
+      const wgDone = state.data.weeklyGoals.filter(g => g.done).length;
+      document.getElementById('weekly-goals-progress-pill').textContent = `${wgDone}/${state.data.weeklyGoals.length} Done`;
+
+      const wgList = document.getElementById('weekly-goals-list');
+      wgList.innerHTML = state.data.weeklyGoals.map(g => `
+        <div onclick="toggleWeeklyGoal('${g.id}')"
+          class="theme-panel rounded-xl p-3 flex items-center justify-between gap-2 cursor-pointer">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-5 h-5 rounded-md border flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+              g.done ? 'bg-violet-500 border-violet-400 text-white' : 'border-slate-500'
+            }">${g.done ? '✓' : ''}</div>
+            <span class="text-xs font-medium truncate ${g.done ? 'line-through text-theme-muted' : 'text-theme-primary'}">
+              ${escapeHtml(g.title)}
+            </span>
+          </div>
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <button type="button" onclick="event.stopPropagation(); openEditModal('weekly-goal', '${g.id}')"
+              class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">✎</button>
+            <button type="button" onclick="event.stopPropagation(); deleteWeeklyGoal('${g.id}')"
+              class="p-1 rounded hover:bg-rose-500/20 text-theme-muted hover:text-rose-400 text-xs">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderMonthlyCalendar() {
+      const year = state.calendarYear;
+      const month = state.calendarMonth;
+      document.getElementById('calendar-month-title').textContent = `${MONTHS_FULL[month]} ${year}`;
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const jsFirstDay = firstDayOfMonth.getDay(); // 0=Sun..6=Sat
+      const leadingEmpty = jsFirstDay === 0 ? 6 : jsFirstDay - 1;
+
+      const todayKey = getRealTodayKey();
+      const grid = document.getElementById('monthly-calendar-grid');
+      let cellsHtml = '';
+
+      for (let i = 0; i < leadingEmpty; i++) {
+        cellsHtml += `<div class="h-16 rounded-xl bg-black/10 border border-transparent"></div>`;
+      }
+
+      for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
+        const dObj = new Date(year, month, dayNum);
+        const k = toDateKey(dObj);
+        const m = getMetricsForDate(k);
+        const log = state.data.dateLogs[k];
+        const isSel = k === state.selectedDateKey;
+        const isTod = k === todayKey;
+        const beforeStart = k < state.data.journeyStartDate;
+
+        // 5 mini prayer dots
+        const prayerDots = state.data.prayersMeta.map(p => {
+          const st = log && log.prayers && log.prayers[p.id]?.status;
+          const color = st === 'ontime'
+            ? 'bg-emerald-400'
+            : st === 'qaza'
+              ? 'bg-amber-400'
+              : 'bg-slate-600/50';
+          return `<span class="w-1.5 h-1.5 rounded-full ${color}"></span>`;
+        }).join('');
+
+        let cellBorder = 'theme-panel hover:border-violet-400/60';
+        if (isSel) {
+          cellBorder = 'bg-violet-500/20 border-2 border-amber-400 shadow-sm';
+        } else if (isTod) {
+          cellBorder = 'theme-panel border-2 border-emerald-400';
+        } else if (beforeStart && m.completedItems === 0) {
+          cellBorder = 'hatched-cell border border-dashed border-slate-700/50 opacity-55';
+        }
+
+        cellsHtml += `
+          <button type="button" onclick="selectDateKey('${k}')"
+            class="h-16 rounded-xl p-1.5 flex flex-col justify-between text-left transition-all ${cellBorder}">
+            <div class="flex items-center justify-between w-full">
+              <span class="font-mono text-xs font-bold tabular-nums ${
+                isTod ? 'text-emerald-400' : isSel ? 'text-amber-300' : 'text-theme-primary'
+              }">${dayNum}</span>
+              ${m.overallPct > 0 ? `<span class="text-[9px] font-mono font-bold text-emerald-400">${m.overallPct}%</span>` : ''}
+            </div>
+
+            <!-- 5 Prayer Dots -->
+            <div class="flex items-center justify-center gap-0.5 my-0.5">
+              ${prayerDots}
+            </div>
+
+            <!-- Mini Task/Habit Progress Bar -->
+            <div class="w-full h-1 rounded-full bg-black/30 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-amber-400 to-cyan-400" style="width: ${m.overallPct}%"></div>
+            </div>
+          </button>
+        `;
+      }
+
+      grid.innerHTML = cellsHtml;
+    }
+
+    function renderMonthlyGoals() {
+      const list = document.getElementById('monthly-goals-list');
+      const avg = state.data.monthlyGoals.length > 0
+        ? Math.round(state.data.monthlyGoals.reduce((a, b) => a + (b.progress || 0), 0) / state.data.monthlyGoals.length)
+        : 0;
+      document.getElementById('monthly-goals-summary').textContent = `${avg}% Avg`;
+
+      list.innerHTML = state.data.monthlyGoals.map(g => `
+        <div class="theme-panel rounded-xl p-3 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs font-semibold text-theme-primary truncate">${escapeHtml(g.title)}</span>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="font-mono text-xs font-bold text-emerald-400 tabular-nums">${g.progress}%</span>
+              <button type="button" onclick="openEditModal('monthly-goal', '${g.id}')"
+                class="p-1 rounded hover:bg-white/10 text-theme-muted hover:text-amber-400 text-xs">✎</button>
+              <button type="button" onclick="deleteMonthlyGoal('${g.id}')"
+                class="p-1 rounded hover:bg-rose-500/20 text-theme-muted hover:text-rose-400 text-xs">✕</button>
+            </div>
+          </div>
+          <input type="range" min="0" max="100" step="5" value="${g.progress}"
+            oninput="updateMonthlyGoalProgress('${g.id}', this.value)"
+            class="w-full accent-emerald-500 cursor-pointer h-1.5 rounded-lg" />
+        </div>
+      `).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      updateLiveClock();
+      setInterval(updateLiveClock, 1000);
+      renderAll();
+    });
+  </script>
+</body>
+</html>
